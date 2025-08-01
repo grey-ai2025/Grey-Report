@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <style>
         /* SPARK Design System Variables */
@@ -79,7 +77,7 @@
             transition: all 0.3s ease;
             position: fixed;
             left: 20px;
-            top: 110px;
+            top: 100px;
             z-index: 999;
         }
 
@@ -122,46 +120,6 @@
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-
-        /* PDF Generation Loading Overlay */
-        .pdf-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-
-        .pdf-overlay.active {
-            display: flex;
-        }
-
-        .pdf-loader {
-            background: white;
-            padding: 30px 50px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .pdf-loader-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--spark-cyan);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
         }
 
         .toc-item {
@@ -601,21 +559,18 @@
             list-style: none;
         }
 
-        /* PDF Save Button */
-        .pdf-button {
-            background: var(--spark-dark-gray);
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
         .pillar-description li {
             margin-bottom: 8px;
             position: relative;
             padding-left: 16px;
+        }
+
+        .pillar-description li:before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--spark-dark-gray);
+            font-size: 12px;
         }
 
         /* Business unit table */
@@ -729,6 +684,14 @@
         .page-ref {
             color: #666;
             font-size: 11px;
+        }
+
+        .progress-note {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            text-align: center;
         }
 
         /* Analysis Sections */
@@ -877,6 +840,18 @@
             margin-bottom: 30px;
         }
 
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            right: 40px;
+            text-align: center;
+            color: var(--spark-gray);
+            font-size: 12px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
         /* Success metrics section styling */
         div[style*="background: #14b8a6"] {
             background: var(--spark-dark-gray) !important;
@@ -1003,7 +978,7 @@
 
         @media (min-width: 768px) {
             .sidebar-toggle {
-                display: flex !important;
+                display: none;
             }
         }
 
@@ -1027,17 +1002,14 @@
     </style>
 </head>
 <body class="bg-white">
-
+    
     <!-- Header -->
-    <header class="header-custom sticky-top py-3 px-4">
-        <div class="d-flex justify-content-between align-items-center">
+    <header class="header-custom">
+        <div class="header-content">
             <div>
-                <h1 class="h3 mb-1 fw-bold">GREY Score™ AI Maturity Assessment</h1>
-                <div class="text-muted small">Partners • Comprehensive Analysis • July 2025</div>
+                <h1>GREY Score™ AI Maturity Assessment</h1>
+                <div class="header-subtitle">IMB Partners • Comprehensive Analysis • July 2025</div>
             </div>
-            <button class="pdf-button no-print" onclick="generatePDF()" id="pdfButton">
-                <i class="bi bi-file-earmark-pdf"></i> Save as PDF
-            </button>
         </div>
     </header>
 
@@ -1049,7 +1021,7 @@
     <!-- Sidebar -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
         <nav class="sidebar-custom">
-            <h4 class="mb-3 mt-4">Contents</h4>
+            <h4>Contents</h4>
             <a class="toc-item active" href="#about-report" data-section="about-report">About Your Report</a>
             <a class="toc-item" href="#methodology" data-section="methodology">Assessment Methodology</a>
             <a class="toc-item" href="#executive-summary" data-section="executive-summary">Executive Summary</a>
@@ -1065,7 +1037,7 @@
 
     <!-- Main Content -->
     <div class="main-content-wrapper" id="mainContent">
-        <main class="container-fluid px-4 py-4">
+        <main class="container-fluid px-0">
             
             <!-- Page 1: About Your Report -->
             <section id="about-report" class="section">
@@ -1335,7 +1307,7 @@
                         <div class="col-auto">
                             <div class="card summary-card-custom overall-score-card text-center p-4">
                                 <h2 class="h6 text-uppercase fw-bold mb-2" style="letter-spacing: 2px;">Overall GREY Score</h2>
-                                <div class="value">57</div>
+                                <div class="value">54</div>
                                 <div class="mt-2">
                                     <span class="badge" style="background: var(--spark-dark-gray); color: white; padding: 8px 20px; border-radius: 20px; font-size: 14px; text-transform: uppercase;">Developing</span>
                                 </div>
@@ -1356,25 +1328,25 @@
                         <div class="col-md-3">
                             <div class="card summary-card-custom text-center p-3" style="background: #ccfcf8;">
                                 <h4 class="h6 text-uppercase fw-bold">Governance</h4>
-                                <div class="value fs-1">55</div>
+                                <div class="value fs-1">43</div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card summary-card-custom text-center p-3" style="background: #b3f9f3;">
                                 <h4 class="h6 text-uppercase fw-bold">Readiness</h4>
-                                <div class="value fs-1">56</div>
+                                <div class="value fs-1">53</div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card summary-card-custom text-center p-3" style="background: #ccfcf8;">
                                 <h4 class="h6 text-uppercase fw-bold">Execution</h4>
-                                <div class="value fs-1">55</div>
+                                <div class="value fs-1">44</div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card summary-card-custom text-center p-3" style="background: var(--spark-cyan);">
                                 <h4 class="h6 text-uppercase fw-bold">Yield Potential</h4>
-                                <div class="value fs-1">59</div>
+                                <div class="value fs-1">76</div>
                             </div>
                         </div>
                     </div>
@@ -1415,7 +1387,7 @@
             
             <!-- Page 6: Division Analysis -->
             <section id="Division" class="section page-break">
-                <div class="section-header-custom">Partners</div>
+                <div class="section-header-custom">IMB Partners</div>
                 
                 <div class="content" style="padding-top: 40px;">
                     <div class="intro-section">
@@ -1439,59 +1411,35 @@
                         <tbody>
                             <tr>
                                 <td class="unit-name">Finance & Accounting</td>
-                                <td class="score-cell-low">52</td>
-                                <td class="score-cell-medium-low">51</td>
-                                <td class="score-cell-medium-low">57</td>
-                                <td class="score-cell-high">54</td>
-                                <td class="score-cell-medium">54</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Investments</td>
-                                <td class="score-cell-low">52</td>
-                                <td class="score-cell-medium">57</td>
-                                <td class="score-cell-medium-low">55</td>
-                                <td class="score-cell-high">57</td>
-                                <td class="score-cell-medium">57</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Business Development</td>
-                                <td class="score-cell-medium">61</td>
-                                <td class="score-cell-medium-high">61</td>
-                                <td class="score-cell-medium">65</td>
-                                <td class="score-cell-high">64</td>
-                                <td class="score-cell-medium-high">63</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">CEO</td>
-                                <td class="score-cell-medium-low">60</td>
-                                <td class="score-cell-medium">54</td>
-                                <td class="score-cell-critical">36</td>
-                                <td class="score-cell-high">61</td>
-                                <td class="score-cell-medium">55</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Marketing & Public Relations</td>
-                                <td class="score-cell-medium-low">48</td>
-                                <td class="score-cell-medium">72</td>
-                                <td class="score-cell-critical">40</td>
-                                <td class="score-cell-high">65</td>
-                                <td class="score-cell-medium">61</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Operations</td>
-                                <td class="score-cell-medium-low">54</td>
-                                <td class="score-cell-medium">48</td>
-                                <td class="score-cell-critical">42</td>
-                                <td class="score-cell-high">57</td>
+                                <td class="score-cell-low">40</td>
+                                <td class="score-cell-medium-low">45</td>
+                                <td class="score-cell-medium-low">47</td>
+                                <td class="score-cell-high">72</td>
                                 <td class="score-cell-medium">51</td>
                             </tr>
                             <tr>
-                                <td class="unit-name">Others</td>
-                                <td class="score-cell-medium-low">56</td>
-                                <td class="score-cell-medium">46</td>
-                                <td class="score-cell-critical">56</td>
-                                <td class="score-cell-high">53</td>
-                                <td class="score-cell-medium">52</td>
+                                <td class="unit-name">Investments</td>
+                                <td class="score-cell-low">39</td>
+                                <td class="score-cell-medium">55</td>
+                                <td class="score-cell-medium-low">43</td>
+                                <td class="score-cell-high">75</td>
+                                <td class="score-cell-medium">53</td>
+                            </tr>
+                            <tr>
+                                <td class="unit-name">Business Development</td>
+                                <td class="score-cell-medium">51</td>
+                                <td class="score-cell-medium-high">60</td>
+                                <td class="score-cell-medium">56</td>
+                                <td class="score-cell-high">80</td>
+                                <td class="score-cell-medium-high">62</td>
+                            </tr>
+                            <tr>
+                                <td class="unit-name">CEO & Operations Group</td>
+                                <td class="score-cell-medium-low">43</td>
+                                <td class="score-cell-medium">50</td>
+                                <td class="score-cell-critical">29</td>
+                                <td class="score-cell-high">76</td>
+                                <td class="score-cell-medium">50</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1510,59 +1458,35 @@
                         <tbody>
                             <tr>
                                 <td class="unit-name">Finance & Accounting</td>
-                                <td class="score-cell-low">49</td>
-                                <td class="score-cell-medium-low">33</td>
-                                <td class="score-cell-medium-low">63</td>
-                                <td class="score-cell-high">33</td>
-                                <td class="score-cell-medium">45</td>
+                                <td class="score-cell-medium">52</td>
+                                <td class="score-cell-critical">9</td>
+                                <td class="score-cell-medium">56</td>
+                                <td class="score-cell-low">36</td>
+                                <td class="score-cell-low">38</td>
                             </tr>
                             <tr>
                                 <td class="unit-name">Investments</td>
-                                <td class="score-cell-low">54</td>
-                                <td class="score-cell-medium">66</td>
-                                <td class="score-cell-medium-low">56</td>
-                                <td class="score-cell-high">43</td>
                                 <td class="score-cell-medium">55</td>
+                                <td class="score-cell-low">32</td>
+                                <td class="score-cell-medium">54</td>
+                                <td class="score-cell-medium-low">46</td>
+                                <td class="score-cell-medium-low">47</td>
                             </tr>
                             <tr>
                                 <td class="unit-name">Business Development</td>
-                                <td class="score-cell-medium">61</td>
-                                <td class="score-cell-medium-high">80</td>
-                                <td class="score-cell-medium">68</td>
-                                <td class="score-cell-high">45</td>
-                                <td class="score-cell-medium-high">54</td>
+                                <td class="score-cell-high">67</td>
+                                <td class="score-cell-medium-low">47</td>
+                                <td class="score-cell-medium-high">62</td>
+                                <td class="score-cell-medium-low">48</td>
+                                <td class="score-cell-medium">56</td>
                             </tr>
                             <tr>
-                                <td class="unit-name">CEO</td>
-                                <td class="score-cell-medium-low">62</td>
-                                <td class="score-cell-medium">80</td>
-                                <td class="score-cell-critical">53</td>
-                                <td class="score-cell-high">34</td>
-                                <td class="score-cell-medium">45</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Marketing & Public Relations</td>
-                                <td class="score-cell-medium-low">64</td>
-                                <td class="score-cell-medium">100</td>
-                                <td class="score-cell-critical">67</td>
-                                <td class="score-cell-high">42</td>
-                                <td class="score-cell-medium">57</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Operations</td>
-                                <td class="score-cell-medium-low">57</td>
-                                <td class="score-cell-medium">30</td>
-                                <td class="score-cell-critical">55</td>
-                                <td class="score-cell-high">21</td>
-                                <td class="score-cell-medium">34</td>
-                            </tr>
-                            <tr>
-                                <td class="unit-name">Others</td>
-                                <td class="score-cell-medium-low">46</td>
-                                <td class="score-cell-medium">40</td>
-                                <td class="score-cell-critical">56</td>
-                                <td class="score-cell-high">45</td>
-                                <td class="score-cell-medium">47</td>
+                                <td class="unit-name">CEO & Operations Group</td>
+                                <td class="score-cell-medium-high">61</td>
+                                <td class="score-cell-low">25</td>
+                                <td class="score-cell-medium">52</td>
+                                <td class="score-cell-low">35</td>
+                                <td class="score-cell-medium-low">43</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1624,7 +1548,7 @@
                     <!-- Score Dashboard -->
                     <div class="score-grid">
                         <div class="score-card low">
-                            <h3>61</h3>
+                            <h3>40</h3>
                             <p>Governance</p>
                         </div>
                         <div class="score-card medium-low">
@@ -1643,19 +1567,19 @@
 
                     <div class="score-grid" style="margin-top: 20px;">
                         <div class="score-card medium">
-                            <h3>49</h3>
+                            <h3>52</h3>
                             <p>AI Literacy</p>
                         </div>
                         <div class="score-card critical">
-                            <h3>33</h3>
+                            <h3>9</h3>
                             <p>Sharing Culture</p>
                         </div>
                         <div class="score-card medium">
-                            <h3>63</h3>
+                            <h3>56</h3>
                             <p>Attitude & Initiative</p>
                         </div>
                         <div class="score-card low">
-                            <h3>33</h3>
+                            <h3>36</h3>
                             <p>Company Processes</p>
                         </div>
                     </div>
@@ -1771,38 +1695,38 @@
                 <div class="content">
                     <div class="score-grid">
                         <div class="score-card low">
-                            <h3>52</h3>
+                            <h3>39</h3>
                             <p>Governance</p>
                         </div>
                         <div class="score-card medium">
-                            <h3>57</h3>
+                            <h3>55</h3>
                             <p>Readiness</p>
                         </div>
                         <div class="score-card medium-low">
-                            <h3>55</h3>
+                            <h3>43</h3>
                             <p>Execution</p>
                         </div>
                         <div class="score-card high">
-                            <h3>57</h3>
+                            <h3>75</h3>
                             <p>Yield Potential</p>
                         </div>
                     </div>
 
                     <div class="score-grid" style="margin-top: 20px;">
                         <div class="score-card medium">
-                            <h3>54</h3>
+                            <h3>55</h3>
                             <p>AI Literacy</p>
                         </div>
                         <div class="score-card low">
-                            <h3>66</h3>
+                            <h3>32</h3>
                             <p>Sharing Culture</p>
                         </div>
                         <div class="score-card medium">
-                            <h3>56</h3>
+                            <h3>54</h3>
                             <p>Attitude & Initiative</p>
                         </div>
                         <div class="score-card medium-low">
-                            <h3>43</h3>
+                            <h3>46</h3>
                             <p>Company Processes</p>
                         </div>
                     </div>
@@ -1919,38 +1843,38 @@
                     <!-- Score Dashboard -->
                     <div class="score-grid">
                         <div class="score-card medium">
-                            <h3>61</h3>
+                            <h3>51</h3>
                             <p>Governance</p>
                         </div>
                         <div class="score-card medium-high">
-                            <h3>61</h3>
+                            <h3>60</h3>
                             <p>Readiness</p>
                         </div>
                         <div class="score-card medium">
-                            <h3>65</h3>
+                            <h3>56</h3>
                             <p>Execution</p>
                         </div>
                         <div class="score-card high">
-                            <h3>64</h3>
+                            <h3>80</h3>
                             <p>Yield Potential</p>
                         </div>
                     </div>
 
                     <div class="score-grid" style="margin-top: 20px;">
                         <div class="score-card medium-high">
-                            <h3>61</h3>
+                            <h3>67</h3>
                             <p>AI Literacy</p>
                         </div>
                         <div class="score-card medium-low">
-                            <h3>80</h3>
+                            <h3>47</h3>
                             <p>Sharing Culture</p>
                         </div>
                         <div class="score-card medium-high">
-                            <h3>68</h3>
+                            <h3>62</h3>
                             <p>Attitude & Initiative</p>
                         </div>
                         <div class="score-card medium-low">
-                            <h3>45</h3>
+                            <h3>48</h3>
                             <p>Company Processes</p>
                         </div>
                     </div>
@@ -2066,38 +1990,38 @@
                 <div class="content">
                     <div class="score-grid">
                         <div class="score-card medium-low">
-                            <h3>57</h3>
+                            <h3>43</h3>
                             <p>Governance</p>
                         </div>
                         <div class="score-card medium">
-                            <h3>51</h3>
+                            <h3>50</h3>
                             <p>Readiness</p>
                         </div>
                         <div class="score-card critical">
-                            <h3>39</h3>
+                            <h3>29</h3>
                             <p>Execution</p>
                         </div>
                         <div class="score-card high">
-                            <h3>59</h3>
+                            <h3>76</h3>
                             <p>Yield Potential</p>
                         </div>
                     </div>
 
                     <div class="score-grid" style="margin-top: 20px;">
                         <div class="score-card medium-high">
-                            <h3>60</h3>
+                            <h3>61</h3>
                             <p>AI Literacy</p>
                         </div>
                         <div class="score-card low">
-                            <h3>55</h3>
+                            <h3>25</h3>
                             <p>Sharing Culture</p>
                         </div>
                         <div class="score-card medium">
-                            <h3>54</h3>
+                            <h3>52</h3>
                             <p>Attitude & Initiative</p>
                         </div>
                         <div class="score-card low">
-                            <h3>28</h3>
+                            <h3>35</h3>
                             <p>Company Processes</p>
                         </div>
                     </div>
@@ -2347,39 +2271,6 @@
                         <div class="highlight-section-custom">
                             <h4>Key Quotes from Leadership</h4>
                             <blockquote class="blockquote">
-            <!-- Page 5: Evidence & Documentation -->
-            <section id="evidence" class="section page-break">
-                <div class="section-header-custom">Evidence & Documentation</div>
-                
-                <p class="mb-4">Survey statistics, key quotes, themes, and risk log supporting the assessment findings.</p>
-                
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="highlight-section-custom">
-                            <h4>Survey Statistics</h4>
-                            <ul>
-                                <li><strong>Response Rate:</strong> 89% (142 of 160 employees)</li>
-                                <li><strong>Assessment Duration:</strong> 3 weeks</li>
-                                <li><strong>Interview Sessions:</strong> 28 leadership interviews</li>
-                                <li><strong>Focus Groups:</strong> 12 sessions across business units</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="highlight-section-custom">
-                            <h4>Key Themes</h4>
-                            <ul>
-                                <li>Strong AI value recognition across all divisions</li>
-                                <li>Critical execution and collaboration gaps identified</li>
-                                <li>Business Development emerging as AI champion</li>
-                                <li>Urgent need for mentor-led intervention strategy</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="highlight-section-custom">
-                            <h4>Key Quotes from Leadership</h4>
-                            <blockquote class="blockquote">
                                 <p class="mb-3">"Business Development has shown impressive AI adoption and results. We should leverage their expertise across the organization immediately."</p>
                                 <footer class="blockquote-footer">Chief Executive Officer</footer>
                             </blockquote>
@@ -2410,25 +2301,25 @@
                                         <tr>
                                             <td><strong>Execution Crisis</strong></td>
                                             <td>CEO & Operations Group unable to implement AI solutions</td>
-                                            <td><span>Critical</span></td>
+                                            <td><span class="badge bg-danger">Critical</span></td>
                                             <td>Emergency Business Development mentoring</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Collaboration Breakdown</strong></td>
                                             <td>Finance & Accounting sharing culture failure</td>
-                                            <td><span>Critical</span></td>
+                                            <td><span class="badge bg-danger">Critical</span></td>
                                             <td>Structured knowledge sharing program</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Knowledge Silos</strong></td>
                                             <td>Limited cross-division AI learning and best practice sharing</td>
-                                            <td><span>High</span></td>
+                                            <td><span class="badge bg-warning text-dark">High</span></td>
                                             <td>Champion-led Center of Excellence</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Infrastructure Gaps</strong></td>
                                             <td>Limited access to AI tools and training resources</td>
-                                            <td><span>Medium</span></td>
+                                            <td><span class="badge bg-warning text-dark">Medium</span></td>
                                             <td>Phased readiness improvement program</td>
                                         </tr>
                                     </tbody>
@@ -2440,15 +2331,13 @@
             </section>
         </main>
 
+        
 
-    <!-- PDF Generation Loading Overlay -->
-    <div class="pdf-overlay" id="pdfOverlay">
-        <div class="pdf-loader">
-            <div class="pdf-loader-spinner"></div>
-            <h5>Generating PDF...</h5>
-            <p class="text-muted mb-0">This may take a few moments</p>
-        </div>
-    </div>
+        <!-- Navigation buttons
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn" onclick="changePage(-1)"><i class="bi bi-arrow-left"></i> Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next <i class="bi bi-arrow-right"></i></button>
+        </div> -->
     </div>
 
     <!-- Bootstrap Bundle with Popper -->
@@ -2539,6 +2428,20 @@
                 });
                 
                 updateActiveNavLink(sectionId);
+            }
+        }
+
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (currentMode === 'section') {
+                prevBtn.style.display = 'none';
+                nextBtn.innerHTML = 'Division Analysis <i class="bi bi-arrow-right"></i>';
+                nextBtn.disabled = false;
+            } else {
+                prevBtn.style.display = 'flex';
+                nextBtn.innerHTML = 'Next <i class="bi bi-arrow-right"></i>';
             }
         }
 
@@ -2658,132 +2561,16 @@
             }
         });
 
-    async function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    
-    // Show loading overlay
-    document.getElementById('pdfOverlay').classList.add('active');
-    document.getElementById('pdfButton').disabled = true;
-    
-    try {
-        // Hide navigation elements for PDF generation
-        document.getElementById('sidebarWrapper').style.display = 'none';
-        document.getElementById('sidebarToggle').style.display = 'none';
-        document.getElementById('mainContent').style.marginLeft = '0';
-        
-        // Initialize PDF with A4 format
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
-        });
-        
-        // PDF settings
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 15;
-        let currentPage = 1;
-        
-        // Header function
-        const addHeader = (pageNum) => {
-            pdf.setFontSize(10);
-            pdf.setTextColor(100);
-            pdf.text('GREY Score™ Assessment Report', margin, 10);
-            pdf.text(`Page ${pageNum}`, pageWidth - margin - 15, 10);
-        };
-        
-        // Cover page
-        pdf.setFontSize(24);
-        pdf.setTextColor(0);
-        pdf.text('GREY Score™', pageWidth/2, 50, { align: 'center' });
-        pdf.setFontSize(20);
-        pdf.text('AI Maturity Assessment Report', pageWidth/2, 65, { align: 'center' });
-        pdf.setFontSize(14);
-        pdf.text('July 2025', pageWidth/2, 80, { align: 'center' });
-        
-        // Overall score box
-        pdf.setFillColor(173, 251, 246); // Cyan color
-        pdf.roundedRect(pageWidth/2 - 30, 100, 60, 40, 3, 3, 'F');
-        pdf.setFontSize(12);
-        pdf.text('OVERALL SCORE', pageWidth/2, 110, { align: 'center' });
-        pdf.setFontSize(24);
-        pdf.text('54', pageWidth/2, 130, { align: 'center' });
-
-        // Get all sections
-        const sections = document.querySelectorAll('.section');
-        
-        // Process each section
-        for (const section of sections) {
-            // Add new page for each section
-            if (currentPage > 1) {
-                pdf.addPage();
-            }
-            currentPage++;
-            addHeader(currentPage);
-            
-            // Capture section content
-            const canvas = await html2canvas(section, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                windowWidth: 1200,
-                height: section.scrollHeight
-            });
-            
-            // Calculate dimensions
-            const imgWidth = pageWidth - (margin * 2);
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            
-            // Add content with pagination
-            let position = 20;
-            let remainingHeight = imgHeight;
-            
-            while (remainingHeight > 0) {
-                const availableHeight = pageHeight - position - margin;
-                const heightToAdd = Math.min(remainingHeight, availableHeight);
-                
-                pdf.addImage(
-                    canvas.toDataURL('image/png'),
-                    'PNG',
-                    margin,
-                    position,
-                    imgWidth,
-                    heightToAdd,
-                    undefined,
-                    'FAST'
-                );
-                
-                remainingHeight -= heightToAdd;
-                
-                if (remainingHeight > 0) {
-                    pdf.addPage();
-                    currentPage++;
-                    addHeader(currentPage);
-                    position = 20;
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (currentMode === 'page') {
+                if (e.key === 'ArrowLeft' && currentPage > 6) {
+                    changePage(-1);
+                } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                    changePage(1);
                 }
             }
-        }
-        
-        // Save PDF
-        pdf.save('GREY_Score_Assessment_Report.pdf');
-        
-        // Success message
-        setTimeout(() => {
-            alert('PDF generated successfully!');
-        }, 500);
-        
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Error generating PDF. Please try again.');
-    } finally {
-        // Restore navigation elements
-        document.getElementById('sidebarWrapper').style.display = '';
-        document.getElementById('sidebarToggle').style.display = '';
-        document.getElementById('mainContent').style.marginLeft = '';
-        document.getElementById('pdfOverlay').classList.remove('active');
-        document.getElementById('pdfButton').disabled = false;
-    }
-}
+        });
     </script>
 </body>
 </html>
