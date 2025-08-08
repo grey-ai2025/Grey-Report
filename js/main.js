@@ -13,8 +13,8 @@ function login(event) {
     errorMessage.classList.remove('hidden');
 
     // Simple validation (in a real app, this would be done on a server)
-    if ((username === 'admin' && password === 'IMB082025') ||
-        (username === 'user' && password === 'IMB082025')) {
+    if ((username === 'admin' && password === 'sample2025') ||
+        (username === 'user' && password === 'sample2025')) {
         // Store login state in local storage (persists after refresh)
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', username);
@@ -294,7 +294,7 @@ async function generatePDF() {
         const addHeader = (pageNum) => {
             pdf.setFontSize(10);
             pdf.setTextColor(100, 100, 100);
-            pdf.text('GREY Score™ Report - IMB Partners', margin, 10);
+            pdf.text('GREY Score™ Report', margin, 10);
             pdf.text(`Page ${pageNum}`, pageWidth - margin - 15, 10);
 
             // Add a subtle line under header
@@ -350,7 +350,7 @@ async function generatePDF() {
 
         pdf.setFontSize(18);
         pdf.setTextColor(67, 67, 67);
-        pdf.text('IMB Partners', pageWidth / 2, 115, { align: 'center' });
+        pdf.text(' ', pageWidth / 2, 115, { align: 'center' });
 
         pdf.setFontSize(14);
         pdf.text('August 2025', pageWidth / 2, 130, { align: 'center' });
@@ -532,7 +532,7 @@ async function generatePDF() {
         const info = [
             `Generated: ${date}`,
             'Document Type: GREY Score™ Report',
-            'Organization: IMB Partners',
+            'Organization: ',
             'Assessment Period: August 2025',
             'Total Pages: ' + currentPage,
             '',
@@ -546,7 +546,7 @@ async function generatePDF() {
         });
 
         // Save the PDF
-        const filename = `GREY_Score™_Report_IMB_Partners_${new Date().toISOString().split('T')[0]}.pdf`;
+        const filename = `GREY_Score™_Report_${new Date().toISOString().split('T')[0]}.pdf`;
         pdf.save(filename);
 
         // Show success message
